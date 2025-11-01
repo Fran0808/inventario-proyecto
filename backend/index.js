@@ -1,12 +1,17 @@
 const express = require('express');
 const cors = require('cors');
 
+const productosRoutes = require('./routes/productosRoutes');
+
 const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Middlewares
 app.use(cors());
-app.use(express.json());
+app.use(express.json()); // para recibir JSON
+
+// Rutas
+app.use('/productos', productosRoutes);
 
 // Ruta de prueba
 app.get('/', (req, res) => {
