@@ -19,13 +19,13 @@ app.use((req, res, next) => {
 const productosRoute = require('./routes/productosRoute');
 const proveedorRoute = require('./routes/proveedorRoute');
 const categoriaRoute = require('./routes/categoriaRoute');
-
+const inventarioRoute = require('./routes/inventarioRoute');
 
 // Usar las rutas
 app.use('/productos', productosRoute);
 app.use('/proveedores', proveedorRoute);
 app.use('/categorias', categoriaRoute);
-
+app.use('/inventario', inventarioRoute);
 
 // Ruta base opcional
 app.get('/', (req, res) => {
