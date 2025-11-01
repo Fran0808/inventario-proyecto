@@ -1,0 +1,31 @@
+.barra-lateral {
+  width: 260px;
+  background-color: #2d4c69;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  overflow-y: auto;
+}
+
+/* Diseño de los enlaces */
+.enlace-lateral {
+  color: #ffffffcc;
+  font-size: 1rem;
+  padding: 10px 15px;
+  border-radius: 8px;
+  margin-bottom: 5px;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.enlace-lateral:hover {
+  background-color: #3c6b94;
+  color: #fff;
+  text-decoration: none;
+}
+
+.enlace-lateral.activa {
+  background-color: #00EE56;
+  color: #fff;
+  font-weight: 600;
+}
