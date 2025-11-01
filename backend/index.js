@@ -7,11 +7,23 @@ const port = 3000;
 app.use(cors());
 app.use(express.json());
 
+
+// Logger simple para depuración, cada petición que llegue al servidor se imprime en la consola antes de pasar a las rutas correspondientes
+app.use((req, res, next) => {
+  console.log(new Date().toISOString(), req.method, req.url);
+  next();
+});
+
+
 // Importar rutas
-const productosRoutes = require('./routes/productosRoute');
+const productosRoute = require('./routes/productosRoute');
+const proveedorRoute = require('./routes/proveedorRoute');
+
 
 // Usar las rutas
-app.use('/productos', productosRoutes);
+app.use('/productos', productosRoute);
+app.use('/proveedores', proveedorRoute);
+
 
 // Ruta base opcional
 app.get('/', (req, res) => {
