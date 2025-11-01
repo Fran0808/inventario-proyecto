@@ -1,33 +1,29 @@
 const express = require('express');
 const cors = require('cors');
-
-const productosRoutes = require('./routes/productosRoutes');
-
 const app = express();
-const PORT = process.env.PORT || 5000;
+const port = 3000;
 
-// Middlewares
+// Middleware
 app.use(cors());
-app.use(express.json()); // para recibir JSON
+app.use(express.json());
 
-// Rutas
+// Importar rutas
+const productosRoutes = require('./routes/productosRoute');
+
+// Usar las rutas
 app.use('/productos', productosRoutes);
 
-// Ruta de prueba
+// Ruta base opcional
 app.get('/', (req, res) => {
-  res.send('Servidor backend funcionando correctamente');
+  res.send('Servidor funcionando correctamente');
+});
+
+// Manejo de rutas no encontradas
+app.use((req, res) => {
+  res.status(404).json({ message: 'Ruta no encontrada' });
 });
 
 // Iniciar servidor
-const server = app.listen(PORT, () => {
-  console.log(`Servidor corriendo en http://localhost:${PORT}`);
+app.listen(port, () => {
+  console.log(`Servidor escuchando en http://localhost:${port}`);
 });
-
-// Cerrar servidor ordenadamente en SIGINT (Ctrl+C)
-process.on('SIGINT', () => {
-  console.log('Cerrando servidor...');
-  server.close(() => process.exit(0));
-});
-
-// Exportar app (útil para tests)
-module.exports = app;
