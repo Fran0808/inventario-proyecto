@@ -1,4 +1,4 @@
-import './Filtros.css'
+import './Tablas.css'
 
 function Tablas({ data }) {
   if (!data || data.length === 0) {
