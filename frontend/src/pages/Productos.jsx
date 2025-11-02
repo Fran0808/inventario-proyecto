@@ -89,16 +89,46 @@ function Productos() {
 
   // 🔹 Renderizado
   return (
-    <div className="container mt-4">
-      <h2 className="mb-4">Productos</h2>
+        <div className="container mt-4">
+      <h2>Productos</h2>
+      <button
+        className="btn btn-success my-3"
+        data-bs-toggle="modal"
+        data-bs-target="#modalFormulario"
+      >
+        Agregar Producto
+      </button>
 
-      {/* Formulario para agregar producto */}
-      <Formulario titulo="Agregar Producto" campos={campos} onEnviar={manejarEnvio} />
+      {/* 🔹 Modal Bootstrap */}
+      <div
+        className="modal fade"
+        id="modalFormulario"
+        tabIndex="-1"
+        aria-labelledby="modalFormularioLabel"
+        aria-hidden="true"
+      >
+        <div className="modal-dialog modal-lg">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title" id="modalFormularioLabel">
+                Agregar Producto
+              </h5>
+              <button
+                id="cerrarModal"
+                type="button"
+                className="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Cerrar"
+              ></button>
+            </div>
+            <div className="modal-body">
+              <Formulario titulo="Nuevo Producto" campos={campos} onEnviar={manejarEnvio} />
+            </div>
+          </div>
+        </div>
+      </div>
 
-      <hr className="my-4" />
-
-      {/* Tabla de productos */}
-      <h2>Tabla de Productos</h2>
+      <h3 className="mt-5">Lista de productos</h3>
       <Tablas data={productos} />
     </div>
   );
