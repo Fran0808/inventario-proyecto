@@ -1,5 +1,6 @@
 import React from 'react';
 import "./BarraLateral.css"
+import { NavLink, Link } from "react-router-dom";
 
 function BarraLateral() {
     return(
@@ -13,38 +14,33 @@ function BarraLateral() {
 
             <ul className = "nav flex-column">
                 <li className = "nav-item">
-                    <a href="#" className = "nav-link text-white activa enlace-lateral">
-                        <i className = "bi bi-house-door me-2"></i>
-                        Inicio
-                    </a>
+                    <NavLink to="/"  className={({ isActive }) => `nav-link text-white enlace-lateral ${isActive ? "activa" : ""}`}>
+                        <i className="bi bi-house-door me-2"></i>Inicio
+                    </NavLink>
                 </li>
 
                 <li className = "nav-item">
-                    <a href="#" className = "nav-link text-white enlace-lateral">
-                        <i className = "bi bi-box-seam me-2"></i>
-                        Productos
-                    </a>
+                    <NavLink to="/productos" className={({ isActive }) => `nav-link text-white enlace-lateral ${isActive ? "activa" : ""}`}>
+                        <i className="bi bi-box-seam me-2"></i>Productos
+                    </NavLink>
                 </li>
 
                 <li className = "nav-item">
-                    <a href="#" className = "nav-link text-white enlace-lateral">
-                        <i className = "bi bi-clipboard-data me-2"></i>
-                        Inventario / Movimientos
-                    </a>
+                    <NavLink to="/inventario" className={({ isActive }) => `nav-link text-white enlace-lateral ${isActive ? "activa" : ""}`}>
+                        <i className="bi bi-clipboard-data me-2"></i>Inventario / Movimientos
+                    </NavLink>
                 </li>
 
                 <li className = "nav-item">
-                    <a href="#" className = "nav-link text-white enlace-lateral">
-                        <i className = "bi bi-truck me-2"></i>
-                        Proveedores
-                    </a>
+                    <NavLink to="/proveedores" className={({ isActive }) => `nav-link text-white enlace-lateral ${isActive ? "activa" : ""}`}>
+                        <i className="bi bi-truck me-2"></i>Proveedores
+                    </NavLink>
                 </li>
 
                 <li className = "nav-item mt-auto">
-                    <a href="#" className = "nav-link text-white enlace-lateral">
-                        <i className = "bi  bi-box-arrow-right me-2"></i>
-                        Salir
-                    </a>
+                    <Link to="/login" className="nav-link text-white enlace-lateral">
+                        <i className="bi bi-box-arrow-right me-2"></i>Salir
+                    </Link>
                 </li>
             </ul>
         </div>
