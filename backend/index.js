@@ -21,6 +21,7 @@ const proveedorRoute = require('./routes/proveedorRoute');
 const categoriaRoute = require('./routes/categoriaRoute');
 const inventarioRoute = require('./routes/inventarioRoute');
 const dashboardRoute = require('./routes/dashboardRoute');
+const authRoute = require('./routes/authRoute');
 
 // Usar las rutas
 app.use('/productos', productosRoute);
@@ -28,6 +29,7 @@ app.use('/proveedores', proveedorRoute);
 app.use('/categorias', categoriaRoute);
 app.use('/inventario', inventarioRoute);
 app.use('/api', dashboardRoute);
+app.use('/api/auth', authRoute);
 
 // Ruta base opcional
 app.get('/', (req, res) => {
