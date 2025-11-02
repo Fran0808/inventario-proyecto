@@ -46,7 +46,6 @@ function BarraLateral() {
                         Salir
                     </a>
                 </li>
-
             </ul>
         </div>
     );
