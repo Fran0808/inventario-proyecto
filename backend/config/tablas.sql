@@ -47,12 +47,14 @@ CREATE TABLE Movimientos (
 );
 
 
---Insercciones en las tablas para pruebas
+-- Insercciones en las tablas para pruebas
+-- Usuario administrador (un único registro)
+-- En la terminal ejecutar el archivo crearUsuario con: node scripts/crearUsuario.js solo una vez
 
 --Desactivar temporalmente las comprobaciones de FK para permitir inserciones con IDs explícitos
 SET FOREIGN_KEY_CHECKS = 0;
 
--- 1) Categorías (6)
+-- Categorías (6)
 INSERT INTO Categoria (id_categoria, nombre_categoria) VALUES
 (1, 'Bebidas'),
 (2, 'Alimentos enlatados'),
@@ -61,7 +63,7 @@ INSERT INTO Categoria (id_categoria, nombre_categoria) VALUES
 (5, 'Papel y oficina'),
 (6, 'Empaques y embalaje');
 
--- 2) Proveedores (8)
+-- Proveedores (8)
 INSERT INTO Proveedor (id_proveedor, razon_social, telefono, activo) VALUES
 (1, 'Distribuciones Norte S.A.', '01-2345678', 1),
 (2, 'Bebidas del Valle S.R.L.', '01-9876543', 1),
@@ -72,11 +74,7 @@ INSERT INTO Proveedor (id_proveedor, razon_social, telefono, activo) VALUES
 (7, 'Empaques Perú S.A.', '01-3344556', 1),
 (8, 'Importadora Global', '01-1122334', 1);
 
--- 3) Usuario administrador (un único registro)
-INSERT INTO Usuario (rol, nombre_usuario, contraseña) VALUES
-('admin', 'admin', 'admin');
-
--- 4) Productos (35) -- referencia coherente a categoria y proveedor
+-- Productos (35) -- referencia coherente a categoria y proveedor
 -- Formato: nombre_producto, id_categoria, id_proveedor, stock_producto, precio_producto
 INSERT INTO Producto (nombre_producto, id_categoria, id_proveedor, stock_producto, precio_producto) VALUES
 ('Agua mineral 500ml (pack 12)', 1, 2, 120, 12.00),
