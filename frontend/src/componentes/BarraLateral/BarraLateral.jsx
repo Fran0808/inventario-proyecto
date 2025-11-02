@@ -6,8 +6,6 @@ function BarraLateral() {
     return(
         <div className = "barra-lateral text-white p-3 vh-100">
             <div className="d-flex align-items-center mb-4">
-                <i className = "bi bi-shop me-2 fs-4"></i>
-                <span className = "fs-5 fw-semibold">NOMBRE TIENDA</span>
             </div>
 
             <hr className = "border-light opacity-50"/>
