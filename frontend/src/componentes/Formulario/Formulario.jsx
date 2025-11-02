@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./Formulario.css";
 
-function Formulario({ titulo, campos = [], onEnviar }) {
+function Formulario({ titulo, campos = [], onEnviar }) { /*Propiedades Props*/ 
   const [valores, setValores] = useState({});
   const [opcionesSelect, setOpcionesSelect] = useState({});
 
@@ -57,66 +57,74 @@ function Formulario({ titulo, campos = [], onEnviar }) {
     return { valueKey, textKey };
   };
 
-  return (
-    <form onSubmit={manejarEnvio}>
-      <h5 className="mb-3">{titulo}</h5>
+return (
+  <form onSubmit={manejarEnvio}>
+    <h5 className="mb-3">{titulo}</h5>
 
-      {campos.map((campo, index) => {
-        const opciones = campo.opciones || opcionesSelect[campo.nombre] || [];
+    {campos.map((campo, index) => {
+      const opciones = campo.opciones || opcionesSelect[campo.nombre] || [];
 
-        return (
-          <div className="mb-3" key={index}>
-            <label className="form-label">{campo.etiqueta}</label>
+      return (
+        <div className="mb-3" key={index}>
+          <label className="form-label">{campo.etiqueta}</label>
 
-            {campo.tipo === "select" ? (
-              <select
-                className="form-select"
-                name={campo.nombre}
-                onChange={manejarCambio}
-                value={valores[campo.nombre] || ""}
-                required={campo.requerido}
-              >
-                <option value="">Seleccione una opción</option>
-                {Array.isArray(opciones) &&
-                  opciones.map((op, i) => {
-                    const { valueKey, textKey } = obtenerClaves(op);
-                    const valor = op[valueKey] ?? op.id ?? op.codigo ?? i;
-                    const texto =
-                      op[textKey] ??
-                      op.nombre ??
-                      op.descripcion ??
-                      JSON.stringify(op);
-                    return (
-                      <option key={i} value={valor}>
-                        {texto}
-                      </option>
-                    );
-                  })}
-              </select>
-            ) : campo.tipo === "textarea" ? (
-              <textarea
-                className="form-control"
-                name={campo.nombre}
-                onChange={manejarCambio}
-                value={valores[campo.nombre] || ""}
-                required={campo.requerido}
-              ></textarea>
-            ) : (
+          {campo.tipo === "select" ? (
+            <select
+              className="form-select"
+              name={campo.nombre}
+              onChange={manejarCambio}
+              value={valores[campo.nombre] || ""}
+              required={campo.requerido}
+            >
+              <option value="">Seleccione una opción</option>
+              {opciones.map((op, i) => {
+                const { valueKey, textKey } = obtenerClaves(op);
+                const valor = op[valueKey] ?? op.id ?? op.codigo ?? i;
+                const texto = op[textKey] ?? op.nombre ?? op.descripcion ?? JSON.stringify(op);
+                return (
+                  <option key={i} value={valor}>
+                    {texto}
+                  </option>
+                );
+              })}
+            </select>
+          ) : campo.tipo === "textarea" ? (
+            <textarea
+              className="form-control"
+              name={campo.nombre}
+              onChange={manejarCambio}
+              value={valores[campo.nombre] || ""}
+              required={campo.requerido}
+            />
+          ) : campo.tipo === "checkbox" ? (
+            <div className="form-check">
               <input
-                type={campo.tipo}
-                className="form-control"
+                type="checkbox"
+                className="form-check-input"
                 name={campo.nombre}
-                onChange={manejarCambio}
-                value={
-                  campo.tipo === "file" ? undefined : valores[campo.nombre] || ""
-                }
-                required={campo.requerido}
+                onChange={(e) => manejarCambio({ 
+                  target: { 
+                    name: campo.nombre, 
+                    value: e.target.checked 
+                  } 
+                })}
+                checked={valores[campo.nombre] || false}
               />
-            )}
-          </div>
-        );
-      })}
-
+              <label className="form-check-label">{campo.etiqueta}</label>
+            </div>
+          ) : (
+            <input
+              type={campo.tipo}
+              className="form-control"
+              name={campo.nombre}
+              onChange={manejarCambio}
+              value={campo.tipo === "file" ? undefined : valores[campo.nombre] || ""}
+              required={campo.requerido}
+            />
+          )}
+        </div>
+      );
+    })}
       <button type="submit" className="btn btn-primary">
         Guardar
       </button>

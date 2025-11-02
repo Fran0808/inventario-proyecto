@@ -3,9 +3,10 @@ const proveedorModel = require('../models/proveedorModel')
 
 const validarProveedorBody = (body) => {
   const { razon_social, telefono, activo } = body;
+
   if (!razon_social || typeof razon_social !== 'string') return 'Razón social inválida';
   if (telefono && typeof telefono !== 'string') return 'Teléfono inválido';
-  if (activo === undefined || typeof activo !== 'boolean') return 'Activo debe ser true o false';
+  if (activo === undefined ||  typeof activo !== 'boolean') return 'Activo debe ser true o false';
   return null;
 };
 
