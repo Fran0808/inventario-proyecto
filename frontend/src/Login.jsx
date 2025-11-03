@@ -1,10 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Login.css";
 
 const Login = () => {
-  const navegador = useNavigate();
+  const navigate = useNavigate();
   const [dato, setDato] = useState({ username: "", contraseña: "" });
+
+  useEffect(() => {
+    // Si ya está logueado, redirige a /inicio
+    if (localStorage.getItem("auth")) {
+      navigate("/inicio");
+    }
+  }, []);
 
   const manejoCambio = (e) => {
     setDato({
@@ -16,9 +23,11 @@ const Login = () => {
   const verificarLogin = (e) => {
     e.preventDefault();
     if (dato.username && dato.contraseña) {
-      navegador("/Inicio");//para ir al inicio
+      // simular login
+      localStorage.setItem("auth", "true");
+      navigate("/inicio");
     } else {
-      alert("Por favor, ingresa tu usuario y contraseña.");
+      alert("Ingresa usuario y contraseña");
     }
   };
 
@@ -32,38 +41,32 @@ const Login = () => {
 
         <form onSubmit={verificarLogin}>
           <div className="form-group mb-3">
-            <label htmlFor="username" className="form-label">
-              Usuario
-            </label>
+            <label htmlFor="username">Usuario</label>
             <input
               type="text"
               id="username"
-              className="form-control"
-              placeholder="Ingresa tu usuario"
               value={dato.username}
               onChange={manejoCambio}
+              className="form-control"
+              placeholder="Ingresa tu usuario"
             />
           </div>
 
           <div className="form-group mb-3">
-            <label htmlFor="password" className="form-label">
-              Contraseña
-            </label>
+            <label htmlFor="contraseña">Contraseña</label>
             <input
               type="password"
               id="contraseña"
+              value={dato.contraseña}
+              onChange={manejoCambio}
               className="form-control"
               placeholder="Ingresa tu contraseña"
-              value={dato.password}
-              onChange={manejoCambio}
             />
           </div>
 
-          <div className="form-group">
-            <button type="submit" className="btn btn-primary w-full">
-              Iniciar sesión
-            </button>
-          </div>
+          <button type="submit" className="btn btn-primary w-full">
+            Iniciar sesión
+          </button>
         </form>
       </div>
     </div>
