@@ -1,6 +1,6 @@
-import './Tablas.css'
+import "./Tablas.css";
 
-function Tablas({ data }) {
+function Tablas({ data, onEditar = () => {}, onEliminar = () => {} }) {
   if (!data || data.length === 0) {
     return <p className="text-center p-3">No hay datos para mostrar</p>;
   }
@@ -15,6 +15,7 @@ function Tablas({ data }) {
                 {col}
               </th>
             ))}
+            <th className="text-center text-uppercase">Acciones</th>
           </tr>
         </thead>
         <tbody>
@@ -23,6 +24,22 @@ function Tablas({ data }) {
               {columnas.map((col) => (
                 <td key={col}>{item[col] !== undefined ? item[col] : "-"}</td>
               ))}
+
+              {/* 👇 Aquí agregas los botones */}
+              <td className="text-center">
+                <button
+                  className="btn btn-warning btn-sm me-2"
+                  onClick={() => onEditar(item)}
+                >
+                  ✏️
+                </button>
+                <button
+                  className="btn btn-danger btn-sm"
+                  onClick={() => onEliminar(item)}
+                >
+                  🗑️
+                </button>
+              </td>
             </tr>
           ))}
         </tbody>
