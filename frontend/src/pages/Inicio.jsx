@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import TablasView from "../componentes/Tablas/TablasView";
 import Cards from "../componentes/Cards/Cards"; // Ajusta la ruta según tu proyecto
+import GraficoMovimientos from "../componentes/Graficos/GraficoMovimientos";
 
 function Inicio() {
   const [resumen, setResumen] = useState({
@@ -78,6 +79,8 @@ function Inicio() {
         </div>
       </div>
 
+      <GraficoMovimientos />
+      
       {/* Tablas */}
       <h3>Productos con stock bajo</h3>
       <TablasView data={stockBajo} />
