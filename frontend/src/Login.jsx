@@ -20,14 +20,42 @@ const Login = () => {
     });
   };
 
-  const verificarLogin = (e) => {
+  const verificarLogin = async (e) => {
     e.preventDefault();
-    if (dato.username && dato.contraseña) {
-      // simular login
-      localStorage.setItem("auth", "true");
-      navigate("/inicio");
-    } else {
+
+    // Verifica que los campos no estén vacíos
+    if (!dato.username || !dato.contraseña) {
       alert("Ingresa usuario y contraseña");
+      return;
+    }
+
+    try {
+      // Envía la petición al backend
+      const res = await fetch("http://localhost:3000/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          nombre_usuario: dato.username,
+          contraseña: dato.contraseña,
+        }),
+      });
+
+      const data = await res.json();
+
+      // Si el backend responde con error (por ejemplo 401 o 500)
+      if (!res.ok) {
+        throw new Error(data.message || "Error al iniciar sesión");
+      }
+
+      // Si todo está bien, guarda los datos del usuario en el almacenamiento local
+      localStorage.setItem("auth", JSON.stringify(data.usuario));
+
+      alert(`Bienvenido ${data.usuario.nombre_usuario}`);
+
+      // Redirige a /inicio
+      navigate("/inicio");
+    } catch (err) {
+      alert(err.message);
     }
   };
 
