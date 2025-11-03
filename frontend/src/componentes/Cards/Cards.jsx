@@ -1,6 +1,7 @@
 import React from "react";
 import "./Cards.css";
 
+
 const Cards = ({ titulo, valor, cambio, tipo }) => {
   return (
     <div className="card kpi-card text-start">

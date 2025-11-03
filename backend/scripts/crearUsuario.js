@@ -11,7 +11,7 @@ const DB_CONFIG = {
 
 // === CONFIGURA AQUÍ ===
 const NUEVO_USUARIO = 'Juan';
-const NUEVA_CONTRASENA = 'contraseña';
+const NUEVA_CONTRASENA = 'root';
 const NUEVO_ROL = 'Administrador';
 // ======================
 

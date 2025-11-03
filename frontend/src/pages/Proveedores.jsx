@@ -40,7 +40,7 @@ function Proveedores() {
 
     const body = {
       ...resto,
-      activo: Boolean(activo), 
+      activo: Boolean(activo),
     };
 
     const res = await fetch(
@@ -175,6 +175,7 @@ function Proveedores() {
         data={proveedores}
         onEditar={editarProveedor}
         onEliminar={eliminarProveedor}
+        acciones={true}
       />
     </div>
   );
