@@ -12,7 +12,7 @@ function BarraLateral() {
 
             <ul className = "nav flex-column">
                 <li className = "nav-item">
-                    <NavLink to="/"  className={({ isActive }) => `nav-link text-white enlace-lateral ${isActive ? "activa" : ""}`}>
+                    <NavLink to="/inicio"  className={({ isActive }) => `nav-link text-white enlace-lateral ${isActive ? "activa" : ""}`}>
                         <i className="bi bi-house-door me-2"></i>Inicio
                     </NavLink>
                 </li>
@@ -36,7 +36,7 @@ function BarraLateral() {
                 </li>
 
                 <li className = "nav-item mt-auto">
-                    <Link to="/login" className="nav-link text-white enlace-lateral">
+                    <Link to="/" className="nav-link text-white enlace-lateral">
                         <i className="bi bi-box-arrow-right me-2"></i>Salir
                     </Link>
                 </li>

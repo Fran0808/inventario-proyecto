@@ -13,7 +13,7 @@ function App() {
     <Router>
       <Routes>
         {/* Página de login sin barra lateral */}
-        <Route path="/login" element={<Login />} />
+        <Route path="/" element={<Login />} />
 
         {/* Páginas con barra lateral */}
         <Route
@@ -23,7 +23,7 @@ function App() {
               <BarraLateral />
               <main className="flex-grow-1 p-4" style={{ marginLeft: "260px" }}>
                 <Routes>
-                  <Route path="/" element={<Inicio />} />
+                  <Route path="/inicio" element={<Inicio />} />
                   <Route path="/productos" element={<Productos />} />
                   <Route path="/inventario" element={<Inventario />} />
                   <Route path="/proveedores" element={<Proveedores />} />
