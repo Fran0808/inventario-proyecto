@@ -7,6 +7,7 @@ function Productos() {
   const [datosCategorias, setDatosCategorias] = useState([]);
   const [datosProveedores, setDatosProveedores] = useState([]);
   const [productos, setProductos] = useState([]);
+  const [productoSeleccionado, setProductoSeleccionado] = useState(null);
 
   // 🔹 Función para obtener los productos
   const obtenerProductos = async () => {
@@ -34,7 +35,68 @@ function Productos() {
       alert("Error al agregar producto");
     }
   };
-  
+
+  const manejarActualizacion = async (productoActualizado) => {
+    if (!productoSeleccionado) return;
+
+    const {
+      id_producto,
+      nombre_producto,
+      id_categoria,
+      id_proveedor,
+      stock_producto,
+      precio_producto,
+    } = productoActualizado;
+
+    const body = {
+      nombre_producto,
+      id_categoria,
+      id_proveedor,
+      stock_producto,
+      precio_producto,
+    };
+
+    const res = await fetch(
+      `http://localhost:3000/productos/${productoSeleccionado.id_producto}`,
+      {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      }
+    );
+
+    if (res.ok) {
+      alert("Producto actualizado correctamente");
+      obtenerProductos();
+      document.getElementById("cerrarModalEditar").click();
+    } else {
+      const errorData = await res.json();
+      alert("Error al actualizar el producto: " + errorData.error);
+    }
+  };
+
+  // 🔹 Eliminar proveedor
+  const eliminarProducto = async (producto) => {
+    if (!window.confirm("¿Eliminar producto?")) return;
+    const res = await fetch(
+      `http://localhost:3000/productos/${producto.id_producto}`,
+      { method: "DELETE" }
+    );
+    if (res.ok) {
+      alert("Producto eliminado");
+      obtenerProductos();
+    }
+  };
+
+  // 🔹 Editar producto
+  const editarProducto = (producto) => {
+    setProductoSeleccionado(producto);
+    const modalEditar = new bootstrap.Modal(
+      document.getElementById("modalEditarProducto")
+    );
+    modalEditar.show();
+  };
+
   // 🔹 Obtener categorías del backend
   useEffect(() => {
     fetch("http://localhost:3000/categorias")
@@ -43,7 +105,7 @@ function Productos() {
       .catch((error) => console.error("Error al obtener categorías:", error));
   }, []);
 
-    // 🔹 Obtener categorías del backend
+  // 🔹 Obtener categorías del backend
   useEffect(() => {
     fetch("http://localhost:3000/proveedores")
       .then((response) => response.json())
@@ -89,7 +151,7 @@ function Productos() {
 
   // 🔹 Renderizado
   return (
-        <div className="container mt-4">
+    <div className="container mt-4">
       <h2>Productos</h2>
       <button
         className="btn btn-success my-3"
@@ -122,14 +184,52 @@ function Productos() {
               ></button>
             </div>
             <div className="modal-body">
-              <Formulario titulo="Nuevo Producto" campos={campos} onEnviar={manejarEnvio} />
+              <Formulario
+                titulo="Nuevo Producto"
+                campos={campos}
+                onEnviar={manejarEnvio}
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      {/* Modal Editar */}
+      <div
+        className="modal fade"
+        id="modalEditarProducto"
+        tabIndex="-1"
+        aria-hidden="true"
+      >
+        <div className="modal-dialog modal-lg">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title">Editar Producto</h5>
+              <button
+                id="cerrarModalEditar"
+                type="button"
+                className="btn-close"
+                data-bs-dismiss="modal"
+              ></button>
+            </div>
+            <div className="modal-body">
+              {productoSeleccionado && (
+                <Formulario
+                  campos={campos}
+                  valoresIniciales={productoSeleccionado}
+                  onEnviar={manejarActualizacion}
+                />
+              )}
             </div>
           </div>
         </div>
       </div>
 
       <h3 className="mt-5">Lista de productos</h3>
-      <Tablas data={productos} />
+      <Tablas
+        data={productos}
+        onEditar={editarProducto}
+        onEliminar={eliminarProducto}
+      />
     </div>
   );
 }
