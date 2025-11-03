@@ -32,8 +32,7 @@ const crearMovimiento = (req, res) => {
 
   inventarioModel.create(req.body, (err, result) => {
     if (err) {
-      // errores esperados: Producto no encontrado, Usuario no encontrado, Stock insuficiente
-      if (err.message === 'Producto no encontrado' || err.message === 'Usuario no encontrado' || err.message === 'Stock insuficiente' || err.message === 'Tipo de movimiento inválido') {
+      if (['Producto no encontrado', 'Usuario no encontrado', 'Stock insuficiente', 'Tipo de movimiento inválido'].includes(err.message)) {
         return res.status(400).json({ error: err.message });
       }
       return res.status(500).json({ error: err.message });
@@ -42,8 +41,38 @@ const crearMovimiento = (req, res) => {
   });
 };
 
+// Nuevo método para filtrar movimientos entre fechas
+const filtrarMovimientosPorFechas = (req, res) => {
+  const { desde, hasta } = req.query;
+
+  if (!desde || !hasta) {
+    return res.status(400).json({ error: 'Debe proporcionar las fechas "desde" y "hasta".' });
+  }
+
+  const parseDate = (str) => new Date(str);
+  const desdeDate = parseDate(desde);
+  const hastaDate = parseDate(hasta);
+
+  if (isNaN(desdeDate) || isNaN(hastaDate)) {
+    return res.status(400).json({ error: 'Formato de fecha inválido. Use YYYY-MM-DD.' });
+  }
+
+  if (desdeDate > hastaDate) {
+    return res.status(400).json({ error: 'La fecha "desde" no puede ser mayor que "hasta".' });
+  }
+
+  const desdeStr = `${desde} 00:00:00`;
+  const hastaStr = `${hasta} 23:59:59`;
+
+  inventarioModel.getBetween(desdeStr, hastaStr, (err, results) => {
+    if (err) return res.status(500).json({ error: err.message });
+    res.json(results);
+  });
+};
+
 module.exports = {
   obtenerMovimientos,
   obtenerMovimientoPorId,
-  crearMovimiento
+  crearMovimiento,
+  filtrarMovimientosPorFechas
 };

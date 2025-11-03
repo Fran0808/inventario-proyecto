@@ -85,8 +85,21 @@ const create = (movimiento, cb) => {
   });
 };
 
+const getBetween = (desde, hasta, cb) => {
+  const sql = `
+    SELECT m.*, p.nombre_producto, u.nombre_usuario
+    FROM Movimientos m
+    JOIN Producto p ON m.id_producto = p.id_producto
+    JOIN Usuario u ON m.id_usuario = u.id_usuario
+    WHERE m.fecha_movimiento BETWEEN ? AND ?
+    ORDER BY m.fecha_movimiento DESC
+  `;
+  db.query(sql, [desde, hasta], (err, results) => cb(err, results));
+};
+
 module.exports = {
   getAll,
   getById,
-  create
+  create,
+  getBetween
 };
