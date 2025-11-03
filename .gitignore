@@ -1,9 +1,35 @@
-# Node modules (frontend & backend)
+# Dependencias
 node_modules/
 
-# Build files
+# Archivos de build
 dist/
 build/
 
-# Environment variables
+# Archivos de entorno
 .env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
+
+# Vite cache
+.vite/
+
+# Editor
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+
+# Mac / Windows
+*.swp
+*.swo
