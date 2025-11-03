@@ -175,7 +175,6 @@ function Proveedores() {
         data={proveedores}
         onEditar={editarProveedor}
         onEliminar={eliminarProveedor}
-        acciones={true}
       />
     </div>
   );

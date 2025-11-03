@@ -64,7 +64,7 @@ function Inicio() {
         <div className="col-md-3 mb-3">
           <Cards
             titulo="Valor Inventario"
-            valor={`$${resumen.valor_inventario}`}
+            valor={`S/${resumen.valor_inventario}`}
           />
         </div>
         <div className="col-md-3 mb-3">
