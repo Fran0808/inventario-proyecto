@@ -7,7 +7,6 @@ const Login = () => {
   const [dato, setDato] = useState({ username: "", contraseña: "" });
 
   useEffect(() => {
-    // Si ya está logueado, redirige a /inicio
     if (localStorage.getItem("auth")) {
       navigate("/inicio");
     }
@@ -63,7 +62,7 @@ const Login = () => {
     <div className="login-container">
       <div className="login-card shadow">
         <div className="login-header">
-          <div className="login-logo">Store Inventory</div>
+          <img src="/Logo.png" alt="Logo" style={{ width: "250px" }} />
           <p className="login-subtitle">Sistema de Gestión de Inventario</p>
         </div>
 
@@ -76,7 +75,6 @@ const Login = () => {
               value={dato.username}
               onChange={manejoCambio}
               className="form-control"
-              placeholder="Ingresa tu usuario"
             />
           </div>
 
@@ -88,12 +86,11 @@ const Login = () => {
               value={dato.contraseña}
               onChange={manejoCambio}
               className="form-control"
-              placeholder="Ingresa tu contraseña"
             />
           </div>
 
           <button type="submit" className="btn btn-primary w-full">
-            Iniciar sesión
+            Iniciar Sesión
           </button>
         </form>
       </div>
