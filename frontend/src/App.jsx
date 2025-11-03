@@ -6,7 +6,7 @@ import Inicio from "./pages/Inicio";
 import Productos from "./pages/Productos";
 import Inventario from "./pages/Inventario";
 import Proveedores from "./pages/Proveedores";
-import Login from "./pages/Login";
+import Login from "./Login";
 
 function App() {
   return (
