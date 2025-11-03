@@ -35,7 +35,13 @@ function Proveedores() {
 
   const manejarActualizacion = async (proveedorActualizado) => {
     if (!proveedorSeleccionado) return;
-    const { id_proveedor, ...body } = proveedorActualizado;
+
+    const { id_proveedor, activo, ...resto } = proveedorActualizado;
+
+    const body = {
+      ...resto,
+      activo: Boolean(activo), 
+    };
 
     const res = await fetch(
       `http://localhost:3000/proveedores/${proveedorSeleccionado.id_proveedor}`,
