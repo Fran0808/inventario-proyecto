@@ -1,3 +1,4 @@
+import "./Tablas.css";
 function TablasView({ data }) {
   if (!data || data.length === 0) {
     return <p className="text-center p-3">No hay datos para mostrar</p>;
@@ -5,8 +6,8 @@ function TablasView({ data }) {
   const columnas = [...new Set(data.flatMap(Object.keys))];
   return (
     <div className="table-responsive">
-      <table className="table table-bordered table-hover table-striped align-middle">
-        <thead className="table-dark">
+      <table className="table table-bordered align-middle">
+        <thead>
           <tr>
             {columnas.map((col) => (
               <th key={col} className="text-center text-uppercase">

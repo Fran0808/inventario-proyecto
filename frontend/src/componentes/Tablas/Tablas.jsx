@@ -7,8 +7,8 @@ function Tablas({ data, onEditar = () => {}, onEliminar = () => {} }) {
   const columnas = [...new Set(data.flatMap(Object.keys))];
   return (
     <div className="table-responsive">
-      <table className="table table-bordered table-hover table-striped align-middle">
-        <thead className="table-dark">
+      <table className="table text-center table-bordered align-middle">
+        <thead>
           <tr>
             {columnas.map((col) => (
               <th key={col} className="text-center text-uppercase">
@@ -25,19 +25,18 @@ function Tablas({ data, onEditar = () => {}, onEliminar = () => {} }) {
                 <td key={col}>{item[col] !== undefined ? item[col] : "-"}</td>
               ))}
 
-              {/* 👇 Aquí agregas los botones */}
               <td className="text-center">
                 <button
-                  className="btn btn-warning btn-sm me-2"
+                  className="btn btn-success my-1 mx-1 btn-sm"
                   onClick={() => onEditar(item)}
                 >
-                  ✏️
+                  EDITAR
                 </button>
                 <button
-                  className="btn btn-danger btn-sm"
+                  className="btn btn-success my-1 mx-1 btn-sm"
                   onClick={() => onEliminar(item)}
                 >
-                  🗑️
+                  ELIMINAR
                 </button>
               </td>
             </tr>

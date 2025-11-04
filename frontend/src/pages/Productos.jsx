@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Formulario from "../componentes/Formulario/Formulario";
 import Tablas from "../componentes/Tablas/Tablas";
-
+import "./Style.css";
 function Productos() {
   // 🔹 Estados para datos
   const [datosCategorias, setDatosCategorias] = useState([]);
@@ -151,16 +151,8 @@ function Productos() {
 
   // 🔹 Renderizado
   return (
-    <div className="container mt-4">
-      <h2>Productos</h2>
-      <button
-        className="btn btn-success my-3"
-        data-bs-toggle="modal"
-        data-bs-target="#modalFormulario"
-      >
-        Agregar Producto
-      </button>
-
+    <div className="mx-4">
+      <h1>PRODUCTOS DISPONIBLES</h1>
       {/* 🔹 Modal Bootstrap */}
       <div
         className="modal fade"
@@ -224,7 +216,13 @@ function Productos() {
         </div>
       </div>
 
-      <h3 className="mt-5">Lista de productos</h3>
+      <button
+        className="btn btn-success my-3"
+        data-bs-toggle="modal"
+        data-bs-target="#modalFormulario"
+      >
+        AGREGAR PRODUCTO
+      </button>
       <Tablas
         data={productos}
         onEditar={editarProducto}

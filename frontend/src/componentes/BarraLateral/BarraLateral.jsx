@@ -11,20 +11,21 @@ function BarraLateral() {
   };
 
   return (
-    <div className="barra-lateral text-white p-3 vh-100">
-      <div className="d-flex align-items-center mb-4"></div>
-
-      <hr className="border-light opacity-50" />
-
+    <div className="barra-lateral p-3 vh-100">
+      <div className="d-flex align-items-center justify-content-center mb-4 pt-4">
+        <img src="/Logo.png" alt="Logo" style={{ width: "200px" }} />
+      </div>
       <ul className="nav flex-column">
         <li className="nav-item">
           <NavLink
             to="/inicio"
             className={({ isActive }) =>
-              `nav-link enlace-lateral text-white ${isActive ? "activa" : ""}`
+              `nav-link enlace-lateral ${isActive ? "activa" : ""}`
             }
           >
-            <i className="bi bi-house-door me-2"></i>Inicio
+            <span className="d-flex align-items-center fs-5">
+              <i className="bi bi-house-door  me-2"></i>Inicio
+            </span>
           </NavLink>
         </li>
 
@@ -32,10 +33,12 @@ function BarraLateral() {
           <NavLink
             to="/productos"
             className={({ isActive }) =>
-              `nav-link enlace-lateral text-white ${isActive ? "activa" : ""}`
+              `nav-link enlace-lateral ${isActive ? "activa" : ""}`
             }
           >
-            <i className="bi bi-box-seam me-2"></i>Productos
+            <span className="d-flex align-items-center fs-5">
+              <i className="bi bi-box-seam me-2"></i>Productos
+            </span>
           </NavLink>
         </li>
 
@@ -43,11 +46,13 @@ function BarraLateral() {
           <NavLink
             to="/inventario"
             className={({ isActive }) =>
-              `nav-link enlace-lateral text-white ${isActive ? "activa" : ""}`
+              `nav-link enlace-lateral  ${isActive ? "activa" : ""}`
             }
           >
-            <i className="bi bi-clipboard-data me-2"></i>Inventario /
-            Movimientos
+            <span className="d-flex align-items-center fs-5">
+              <i className="bi bi-clipboard-data me-2"></i>
+              Movimientos
+            </span>
           </NavLink>
         </li>
 
@@ -55,19 +60,23 @@ function BarraLateral() {
           <NavLink
             to="/proveedores"
             className={({ isActive }) =>
-              `nav-link enlace-lateral text-white ${isActive ? "activa" : ""}`
+              `nav-link enlace-lateral  ${isActive ? "activa" : ""}`
             }
           >
-            <i className="bi bi-truck me-2"></i>Proveedores
+            <span className="d-flex align-items-center fs-5">
+              <i className="bi bi-truck  me-2"></i>Proveedores
+            </span>
           </NavLink>
         </li>
 
         <li className="nav-item mt-auto">
           <button
             onClick={logout}
-            className="nav-link enlace-lateral text-white bg-transparent border-0 w-100 text-start"
+            className="nav-link enlace-lateral  border-0 w-100 text-start"
           >
-            <i className="bi bi-box-arrow-right me-2"></i>Salir
+            <span className="d-flex align-items-center fs-5">
+              <i className="bi bi-box-arrow-right fs-4 me-2"></i>Salir
+            </span>
           </button>
         </li>
       </ul>

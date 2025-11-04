@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import TablasView from "../componentes/Tablas/TablasView";
+import "./Style.css";
 import Cards from "../componentes/Cards/Cards"; // Ajusta la ruta según tu proyecto
 
 function Inicio() {
@@ -53,11 +54,10 @@ function Inicio() {
   }, []);
 
   return (
-    <div className="container mt-4">
-      <h2>Inicio</h2>
-
+    <div className="mx-4">
+      <h1>PANEL DE INVENTARIO</h1>
       {/* Resumen con KPIs */}
-      <div className="row mb-4">
+      <div className="row mb-1">
         <div className="col-md-3 mb-3">
           <Cards titulo="Total Productos" valor={resumen.total_productos} />
         </div>
@@ -79,10 +79,9 @@ function Inicio() {
       </div>
 
       {/* Tablas */}
-      <h3>Productos con stock bajo</h3>
+      <h2>Productos con stock bajo</h2>
       <TablasView data={stockBajo} />
-
-      <h3 className="mt-5">Movimientos recientes</h3>
+      <h2 className="mt-1">Movimientos recientes</h2>
       <TablasView data={movimientosRecientes} />
     </div>
   );

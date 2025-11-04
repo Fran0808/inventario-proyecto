@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Formulario from "../componentes/Formulario/Formulario";
 import Tablas from "../componentes/Tablas/Tablas";
-
+import "./Style.css";
 function Proveedores() {
   const [proveedores, setProveedores] = useState([]);
   const [proveedorSeleccionado, setProveedorSeleccionado] = useState(null);
@@ -101,17 +101,8 @@ function Proveedores() {
   ];
 
   return (
-    <div className="container mt-4">
-      <h2>Proveedores</h2>
-
-      {/* Botón agregar */}
-      <button
-        className="btn btn-success my-3"
-        data-bs-toggle="modal"
-        data-bs-target="#modalAgregarProveedor"
-      >
-        Agregar Proveedor
-      </button>
+    <div className="mx-4">
+      <h1>CONTACTOS DE SUMINISTRO</h1>
 
       {/* Modal Agregar */}
       <div
@@ -169,8 +160,15 @@ function Proveedores() {
         </div>
       </div>
 
+      {/* Botón agregar */}
+      <button
+        className="btn btn-success my-3"
+        data-bs-toggle="modal"
+        data-bs-target="#modalAgregarProveedor"
+      >
+        AGREGAR PROVEEDOR
+      </button>
       {/* Tabla */}
-      <h3 className="mt-5">Lista de proveedores</h3>
       <Tablas
         data={proveedores}
         onEditar={editarProveedor}
