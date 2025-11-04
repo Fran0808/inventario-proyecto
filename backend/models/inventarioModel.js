@@ -97,9 +97,112 @@ const getBetween = (desde, hasta, cb) => {
   db.query(sql, [desde, hasta], (err, results) => cb(err, results));
 };
 
+const updateById = (id, movimiento, cb) => {
+  const { id_producto, id_usuario, tipo_movimiento, cantidad, nota, fecha_movimiento } = movimiento;
+  const qty = Number(cantidad);
+
+  db.getConnection((err, connection) => {
+    if (err) return cb(err);
+
+    connection.beginTransaction((err) => {
+      if (err) {
+        connection.release();
+        return cb(err);
+      }
+
+
+      const q = (sql, params = []) =>
+        new Promise((resolve, reject) => {
+          connection.query(sql, params, (err, rows) => (err ? reject(err) : resolve(rows)));
+        });
+
+      (async () => {
+        try {
+
+          const rowsMov = await q('SELECT * FROM movimientos WHERE id_movimiento = ?', [id]);
+          if (!rowsMov || rowsMov.length === 0) {
+            throw new Error('Movimiento no encontrado');
+          }
+          const movAntiguo = rowsMov[0];
+
+          const signoAntiguo = movAntiguo.tipo_movimiento === 'ENTRADA' ? -1 : 1;
+          await q('UPDATE producto SET stock_producto = stock_producto + ? WHERE id_producto = ?', [
+            signoAntiguo * Number(movAntiguo.cantidad),
+            movAntiguo.id_producto,
+          ]);
+
+          const rowsProd = await q('SELECT stock_producto FROM producto WHERE id_producto = ? FOR UPDATE', [id_producto]);
+          if (!rowsProd || rowsProd.length === 0) {
+            throw new Error('Producto no encontrado');
+          }
+          const stockActualDestino = Number(rowsProd[0].stock_producto);
+
+          if (tipo_movimiento === 'SALIDA' && qty > stockActualDestino) {
+            throw new Error('Stock insuficiente para el nuevo movimiento');
+          }
+
+          const fechaToUse = fecha_movimiento ? fecha_movimiento : null;
+          if (fechaToUse) {
+            await q(
+              'UPDATE movimientos SET id_producto = ?, id_usuario = ?, tipo_movimiento = ?, cantidad = ?, nota = ?, fecha_movimiento = ? WHERE id_movimiento = ?',
+              [id_producto, id_usuario, tipo_movimiento, qty, nota, fechaToUse, id]
+            );
+          } else {
+            await q(
+              'UPDATE movimientos SET id_producto = ?, id_usuario = ?, tipo_movimiento = ?, cantidad = ?, nota = ?, fecha_movimiento = NOW() WHERE id_movimiento = ?',
+              [id_producto, id_usuario, tipo_movimiento, qty, nota, id]
+            );
+          }
+
+          const signoNuevo = tipo_movimiento === 'ENTRADA' ? 1 : -1;
+          await q('UPDATE producto SET stock_producto = stock_producto + ? WHERE id_producto = ?', [
+            signoNuevo * qty,
+            id_producto,
+          ]);
+
+          connection.commit((err) => {
+            connection.release();
+            if (err) return cb(err);
+            cb(null, { message: 'Movimiento y stock actualizados correctamente' });
+          });
+        } catch (error) {
+          return connection.rollback(() => {
+            connection.release();
+            cb(error);
+          });
+        }
+      })();
+    });
+  });
+};
+
+
+const deleteById = (id, cb) => {
+  const sqlSelect = 'SELECT id_producto, tipo_movimiento, cantidad FROM movimientos WHERE id_movimiento = ?';
+  db.query(sqlSelect, [id], (err, rows) => {
+    if (err) return cb(err);
+    if (rows.length === 0) return cb(new Error('Movimiento no encontrado'));
+
+    const mov = rows[0];
+    const qty = Number(mov.cantidad);
+    const signo = mov.tipo_movimiento === 'ENTRADA' ? -1 : 1;
+
+    const sqlUpdate = 'UPDATE producto SET stock_producto = stock_producto + ? WHERE id_producto = ?';
+    db.query(sqlUpdate, [signo * qty, mov.id_producto], (err2) => {
+      if (err2) return cb(err2);
+
+      const sqlDelete = 'DELETE FROM movimientos WHERE id_movimiento = ?';
+      db.query(sqlDelete, [id], (err3, result) => cb(err3, result));
+    });
+  });
+};
+
 module.exports = {
   getAll,
   getById,
   create,
-  getBetween
+  getBetween,
+  updateById,   
+  deleteById 
 };
+

@@ -3,56 +3,147 @@ import Formulario from "../componentes/Formulario/Formulario";
 import Tablas from "../componentes/Tablas/Tablas";
 
 function Inventario() {
-  // 🔹 Estados para datos
-  const [inventario, setDatosInventario] = useState([]);
-  const [datosProductos, setDatosProductos] = useState([]);
+  // 🔹 Estados
+  const [inventario, setInventario] = useState([]);
+  const [productos, setProductos] = useState([]);
+  const [movimientoSeleccionado, setMovimientoSeleccionado] = useState(null);
 
-  // 🔹 Función para obtener los movimientos
+  // 🔹 Obtener inventario desde el backend
   const obtenerInventario = async () => {
-    const res = await fetch("http://localhost:3000/inventario");
-    const data = await res.json();
-    setDatosInventario(data);
+    try {
+      const res = await fetch("http://localhost:3000/inventario");
+      const data = await res.json();
+      setInventario(data);
+    } catch (error) {
+      console.error("Error al obtener inventario:", error);
+    }
   };
 
+  // 🔹 Obtener lista de productos
+  const obtenerProductos = async () => {
+    try {
+      const res = await fetch("http://localhost:3000/productos");
+      const data = await res.json();
+      setProductos(data);
+    } catch (error) {
+      console.error("Error al obtener productos:", error);
+    }
+  };
+
+  // 🔹 useEffect para cargar datos iniciales
   useEffect(() => {
     obtenerInventario();
+    obtenerProductos();
   }, []);
 
-  // 🔹 Función para manejar el envío del formulario
+  // 🔹 Registrar nuevo movimiento
   const manejarEnvio = async (nuevoMovimiento) => {
     const movimientoConUsuario = {
       ...nuevoMovimiento,
       id_usuario: 1, // Valor por defecto
     };
 
-    const res = await fetch("http://localhost:3000/inventario", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(movimientoConUsuario),
-    });
+    try {
+      const res = await fetch("http://localhost:3000/inventario", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(movimientoConUsuario),
+      });
 
-    if (res.ok) {
-      alert("Movimiento de inventario registrado correctamente");
-      obtenerInventario();
-    } else {
-      alert("Error al registrar el movimiento");
+      if (res.ok) {
+        alert("Movimiento de inventario registrado correctamente");
+        obtenerInventario();
+        document.getElementById("cerrarModal")?.click();
+      } else {
+        alert("Error al registrar el movimiento");
+      }
+    } catch (error) {
+      console.error("Error en la solicitud:", error);
     }
   };
 
-  // 🔹 Obtener categorías del backend
-  useEffect(() => {
-    fetch("http://localhost:3000/productos")
-      .then((response) => response.json())
-      .then((data) => setDatosProductos(data))
-      .catch((error) => console.error("Error al obtener categorías:", error));
-  }, []);
+  // 🔹 Actualizar movimiento existente
+  const manejarActualizacion = async (movimientoActualizado) => {
+    if (!movimientoSeleccionado) return;
 
+    const {
+      id_movimiento,
+      id_producto,
+      tipo_movimiento,
+      fecha_movimiento,
+      cantidad,
+      nota,
+    } = movimientoActualizado;
+
+    const body = {
+      id_producto,
+      id_usuario: 1,
+      tipo_movimiento,
+      fecha_movimiento,
+      cantidad,
+      nota,
+    };
+
+    try {
+      const res = await fetch(
+        `http://localhost:3000/inventario/${movimientoSeleccionado.id_movimiento}`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body),
+        }
+      );
+
+      if (res.ok) {
+        alert("Movimiento actualizado correctamente");
+        obtenerInventario();
+        document.getElementById("cerrarModalEditar")?.click();
+      } else {
+        const errorData = await res.json();
+        alert("Error al actualizar el movimiento: " + errorData.error);
+      }
+    } catch (error) {
+      console.error("Error al actualizar movimiento:", error);
+    }
+  };
+
+  // 🔹 Eliminar movimiento
+  const eliminarMovimiento = async (movimiento) => {
+    if (!window.confirm("¿Eliminar movimiento?")) return;
+
+    try {
+      const res = await fetch(
+        `http://localhost:3000/inventario/${movimiento.id_movimiento}`,
+        { method: "DELETE" }
+      );
+
+      if (res.ok) {
+        alert("Movimiento eliminado correctamente");
+        obtenerInventario();
+      } else {
+        alert("Error al eliminar el movimiento");
+      }
+    } catch (error) {
+      console.error("Error al eliminar movimiento:", error);
+    }
+  };
+
+  // 🔹 Abrir modal de edición con los datos del movimiento
+  const editarMovimiento = (movimiento) => {
+    setMovimientoSeleccionado(movimiento);
+    const modalEditar = new bootstrap.Modal(
+      document.getElementById("modalEditarMovimiento")
+    );
+    modalEditar.show();
+  };
+
+  // 🔹 Campos del formulario
   const campos = [
     {
       nombre: "id_producto",
       etiqueta: "Producto",
       tipo: "select",
-      opciones: datosProductos,
+      opciones: productos,
       requerido: true,
     },
     {
@@ -63,6 +154,7 @@ function Inventario() {
         { id: "ENTRADA", nombre: "Entrada" },
         { id: "SALIDA", nombre: "Salida" },
       ],
+      requerido: true,
     },
     {
       nombre: "cantidad",
@@ -81,7 +173,8 @@ function Inventario() {
   return (
     <div className="mx-4">
       <h2>Movimiento de Inventario</h2>
-      {/* 🔹 Modal Bootstrap */}
+
+      {/* 🔹 Modal para agregar movimiento */}
       <div
         className="modal fade"
         id="modalFormulario"
@@ -93,7 +186,7 @@ function Inventario() {
           <div className="modal-content">
             <div className="modal-header">
               <h5 className="modal-title" id="modalFormularioLabel">
-                Formulario de Movimientos de inventario
+                Nuevo Movimiento
               </h5>
               <button
                 id="cerrarModal"
@@ -113,6 +206,44 @@ function Inventario() {
           </div>
         </div>
       </div>
+
+      {/* 🔹 Modal para editar movimiento */}
+      <div
+        className="modal fade"
+        id="modalEditarMovimiento"
+        tabIndex="-1"
+        aria-labelledby="modalEditarMovimientoLabel"
+        aria-hidden="true"
+      >
+        <div className="modal-dialog modal-lg">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title" id="modalEditarMovimientoLabel">
+                Editar Movimiento
+              </h5>
+              <button
+                id="cerrarModalEditar"
+                type="button"
+                className="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Cerrar"
+              ></button>
+            </div>
+            <div className="modal-body">
+              {movimientoSeleccionado && (
+                <Formulario
+                  titulo="Editar Movimiento"
+                  campos={campos}
+                  valoresIniciales={movimientoSeleccionado}
+                  onEnviar={manejarActualizacion}
+                />
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* 🔹 Botón para abrir modal */}
       <button
         className="btn btn-success my-3"
         data-bs-toggle="modal"
@@ -120,7 +251,13 @@ function Inventario() {
       >
         AGREGAR MOVIMIENTO
       </button>
-      <Tablas data={inventario} />
+
+      {/* 🔹 Tabla de movimientos */}
+      <Tablas
+        data={inventario}
+        onEditar={editarMovimiento}
+        onEliminar={eliminarMovimiento}
+      />
     </div>
   );
 }

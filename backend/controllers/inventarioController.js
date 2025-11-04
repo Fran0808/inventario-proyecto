@@ -70,9 +70,34 @@ const filtrarMovimientosPorFechas = (req, res) => {
   });
 };
 
+const actualizarMovimiento = (req, res) => {
+  const { id } = req.params;
+  const errorValid = validarMovimientoBody(req.body);
+  if (errorValid) return res.status(400).json({ error: errorValid });
+
+  inventarioModel.updateById(id, req.body, (err, result) => {
+    if (err) return res.status(500).json({ error: err.message });
+    if (result.affectedRows === 0)
+      return res.status(404).json({ message: 'Movimiento no encontrado' });
+    res.json({ message: 'Movimiento actualizado correctamente' });
+  });
+};
+
+const eliminarMovimiento = (req, res) => {
+  const { id } = req.params;
+  inventarioModel.deleteById(id, (err, result) => {
+    if (err) return res.status(500).json({ error: err.message });
+    if (result.affectedRows === 0)
+      return res.status(404).json({ message: 'Movimiento no encontrado' });
+    res.json({ message: 'Movimiento eliminado correctamente' });
+  });
+};
+
 module.exports = {
   obtenerMovimientos,
   obtenerMovimientoPorId,
   crearMovimiento,
-  filtrarMovimientosPorFechas
+  filtrarMovimientosPorFechas,
+  actualizarMovimiento, 
+  eliminarMovimiento    
 };
