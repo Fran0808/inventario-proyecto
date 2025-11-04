@@ -11,10 +11,9 @@ import Proveedores from "./pages/Proveedores";
 function App() {
   return (
     <Routes>
-      {/* Login */}
+     
       <Route path="/login" element={<Login />} />
 
-      {/* Redirigir / a /login si no hay auth */}
       <Route
         path="/"
         element={

@@ -3,12 +3,12 @@ import Formulario from "../componentes/Formulario/Formulario";
 import Tablas from "../componentes/Tablas/Tablas";
 
 function Inventario() {
-  // 🔹 Estados
+  // Estados
   const [inventario, setInventario] = useState([]);
   const [productos, setProductos] = useState([]);
   const [movimientoSeleccionado, setMovimientoSeleccionado] = useState(null);
 
-  // 🔹 Obtener inventario desde el backend
+  // Obtener inventario desde el backend
   const obtenerInventario = async () => {
     try {
       const res = await fetch("http://localhost:3000/inventario");
@@ -19,7 +19,7 @@ function Inventario() {
     }
   };
 
-  // 🔹 Obtener lista de productos
+  // Obtener lista de productos
   const obtenerProductos = async () => {
     try {
       const res = await fetch("http://localhost:3000/productos");
@@ -30,13 +30,13 @@ function Inventario() {
     }
   };
 
-  // 🔹 useEffect para cargar datos iniciales
+  // useEffect para cargar datos iniciales
   useEffect(() => {
     obtenerInventario();
     obtenerProductos();
   }, []);
 
-  // 🔹 Registrar nuevo movimiento
+  // Registrar nuevo movimiento
   const manejarEnvio = async (nuevoMovimiento) => {
     const movimientoConUsuario = {
       ...nuevoMovimiento,
@@ -62,7 +62,7 @@ function Inventario() {
     }
   };
 
-  // 🔹 Actualizar movimiento existente
+  // Actualizar movimiento existente
   const manejarActualizacion = async (movimientoActualizado) => {
     if (!movimientoSeleccionado) return;
 
@@ -107,7 +107,7 @@ function Inventario() {
     }
   };
 
-  // 🔹 Eliminar movimiento
+  // Eliminar movimiento
   const eliminarMovimiento = async (movimiento) => {
     if (!window.confirm("¿Eliminar movimiento?")) return;
 
@@ -128,7 +128,7 @@ function Inventario() {
     }
   };
 
-  // 🔹 Abrir modal de edición con los datos del movimiento
+  // Abrir modal de edición con los datos del movimiento
   const editarMovimiento = (movimiento) => {
     setMovimientoSeleccionado(movimiento);
     const modalEditar = new bootstrap.Modal(
@@ -137,7 +137,7 @@ function Inventario() {
     modalEditar.show();
   };
 
-  // 🔹 Campos del formulario
+  // Campos del formulario
   const campos = [
     {
       nombre: "id_producto",
@@ -174,7 +174,7 @@ function Inventario() {
     <div className="mx-4">
       <h2>Movimiento de Inventario</h2>
 
-      {/* 🔹 Modal para agregar movimiento */}
+      {/* Modal para agregar movimiento */}
       <div
         className="modal fade"
         id="modalFormulario"
@@ -207,7 +207,7 @@ function Inventario() {
         </div>
       </div>
 
-      {/* 🔹 Modal para editar movimiento */}
+      {/* Modal para editar movimiento */}
       <div
         className="modal fade"
         id="modalEditarMovimiento"
@@ -243,7 +243,7 @@ function Inventario() {
         </div>
       </div>
 
-      {/* 🔹 Botón para abrir modal */}
+      {/* Botón para abrir modal */}
       <button
         className="btn btn-success my-3"
         data-bs-toggle="modal"
@@ -252,7 +252,7 @@ function Inventario() {
         AGREGAR MOVIMIENTO
       </button>
 
-      {/* 🔹 Tabla de movimientos */}
+      {/* Tabla de movimientos */}
       <Tablas
         data={inventario}
         onEditar={editarMovimiento}

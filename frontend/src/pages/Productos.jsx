@@ -1,15 +1,16 @@
+
 import React, { useEffect, useState } from "react";
 import Formulario from "../componentes/Formulario/Formulario";
 import Tablas from "../componentes/Tablas/Tablas";
 import "./Style.css";
 function Productos() {
-  // 🔹 Estados para datos
+  // Estados para datos
   const [datosCategorias, setDatosCategorias] = useState([]);
   const [datosProveedores, setDatosProveedores] = useState([]);
   const [productos, setProductos] = useState([]);
   const [productoSeleccionado, setProductoSeleccionado] = useState(null);
 
-  // 🔹 Función para obtener los productos
+  // Función para obtener los productos
   const obtenerProductos = async () => {
     const res = await fetch("http://localhost:3000/productos");
     const data = await res.json();
@@ -20,7 +21,7 @@ function Productos() {
     obtenerProductos();
   }, []);
 
-  // 🔹 Función para manejar el envío del formulario
+  // Función para manejar el envío del formulario
   const manejarEnvio = async (nuevoProducto) => {
     const res = await fetch("http://localhost:3000/productos", {
       method: "POST",
@@ -75,7 +76,7 @@ function Productos() {
     }
   };
 
-  // 🔹 Eliminar proveedor
+  // Eliminar proveedor
   const eliminarProducto = async (producto) => {
     if (!window.confirm("¿Eliminar producto?")) return;
     const res = await fetch(
@@ -88,7 +89,7 @@ function Productos() {
     }
   };
 
-  // 🔹 Editar producto
+  // Editar producto
   const editarProducto = (producto) => {
     setProductoSeleccionado(producto);
     const modalEditar = new bootstrap.Modal(
@@ -97,7 +98,7 @@ function Productos() {
     modalEditar.show();
   };
 
-  // 🔹 Obtener categorías del backend
+  // Obtener categorías del backend
   useEffect(() => {
     fetch("http://localhost:3000/categorias")
       .then((response) => response.json())
@@ -105,7 +106,7 @@ function Productos() {
       .catch((error) => console.error("Error al obtener categorías:", error));
   }, []);
 
-  // 🔹 Obtener categorías del backend
+  // Obtener categorías del backend
   useEffect(() => {
     fetch("http://localhost:3000/proveedores")
       .then((response) => response.json())
@@ -113,7 +114,7 @@ function Productos() {
       .catch((error) => console.error("Error al obtener categorías:", error));
   }, []);
 
-  // 🔹 Configuración de los campos del formulario
+  // Configuración de los campos del formulario
   const campos = [
     {
       nombre: "nombre_producto",
@@ -125,14 +126,14 @@ function Productos() {
       nombre: "id_categoria",
       etiqueta: "Categoría",
       tipo: "select",
-      opciones: datosCategorias, // ✅ Aquí se usan las categorías cargadas dinámicamente
+      opciones: datosCategorias, 
       requerido: true,
     },
     {
       nombre: "id_proveedor",
       etiqueta: "Proveedor",
       tipo: "select",
-      opciones: datosProveedores, // ✅ Aquí se usan los Proveedores cargadas dinámicamente
+      opciones: datosProveedores, 
       requerido: true,
     },
     {
@@ -153,7 +154,6 @@ function Productos() {
   return (
     <div className="mx-4">
       <h1>PRODUCTOS DISPONIBLES</h1>
-      {/* 🔹 Modal Bootstrap */}
       <div
         className="modal fade"
         id="modalFormulario"
@@ -185,7 +185,6 @@ function Productos() {
           </div>
         </div>
       </div>
-      {/* Modal Editar */}
       <div
         className="modal fade"
         id="modalEditarProducto"

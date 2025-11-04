@@ -16,7 +16,7 @@ function Proveedores() {
     obtenerProveedores();
   }, []);
 
-  // 🔹 Crear proveedor
+  // Crear proveedor
   const manejarEnvio = async (nuevoProveedor) => {
     const res = await fetch("http://localhost:3000/proveedores", {
       method: "POST",
@@ -62,7 +62,7 @@ function Proveedores() {
     }
   };
 
-  // 🔹 Eliminar proveedor
+  // Eliminar proveedor
   const eliminarProveedor = async (proveedor) => {
     if (!window.confirm("¿Eliminar proveedor?")) return;
     const res = await fetch(
@@ -75,7 +75,7 @@ function Proveedores() {
     }
   };
 
-  // 🔹 Editar proveedor
+  // Editar proveedor
   const editarProveedor = (proveedor) => {
     setProveedorSeleccionado(proveedor);
     const modalEditar = new bootstrap.Modal(
