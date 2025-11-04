@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import Formulario from "../componentes/Formulario/Formulario";
 import Tablas from "../componentes/Tablas/Tablas";
-import "./Style.css";
+
 function Inventario() {
   // 🔹 Estados para datos
   const [inventario, setDatosInventario] = useState([]);
   const [datosProductos, setDatosProductos] = useState([]);
 
-  // 🔹 Función para obtener los productos
+  // 🔹 Función para obtener los movimientos
   const obtenerInventario = async () => {
     const res = await fetch("http://localhost:3000/inventario");
     const data = await res.json();
@@ -19,18 +19,23 @@ function Inventario() {
   }, []);
 
   // 🔹 Función para manejar el envío del formulario
-  const manejarEnvio = async (nuevoProveedor) => {
-    const res = await fetch("http://localhost:3000/proveedores", {
+  const manejarEnvio = async (nuevoMovimiento) => {
+    const movimientoConUsuario = {
+      ...nuevoMovimiento,
+      id_usuario: 1, // Valor por defecto
+    };
+
+    const res = await fetch("http://localhost:3000/inventario", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(nuevoProveedor),
+      body: JSON.stringify(movimientoConUsuario),
     });
 
     if (res.ok) {
-      alert("Proveedor registrado correctamente");
+      alert("Movimiento de inventario registrado correctamente");
       obtenerInventario();
     } else {
-      alert("Error al registrar el proveedor");
+      alert("Error al registrar el movimiento");
     }
   };
 
@@ -42,42 +47,32 @@ function Inventario() {
       .catch((error) => console.error("Error al obtener categorías:", error));
   }, []);
 
-  // 🔹 FALTA DE USUARIO
-
   const campos = [
     {
       nombre: "id_producto",
       etiqueta: "Producto",
+      tipo: "select",
       opciones: datosProductos,
       requerido: true,
     },
     {
-      nombre: "id_usuario",
-      etiqueta: "Usuario",
-      tipo: "text",
-      requerido: true,
-    },
-    {
       nombre: "tipo_movimiento",
-      etiqueta: "Razón Social",
-      tipo: "text",
-      requerido: true,
-    },
-    {
-      nombre: "fecha_movimiento",
-      etiqueta: "Razón Social",
-      tipo: "text",
-      requerido: true,
+      etiqueta: "Tipo de movimiento",
+      tipo: "select",
+      opciones: [
+        { id: "ENTRADA", nombre: "Entrada" },
+        { id: "SALIDA", nombre: "Salida" },
+      ],
     },
     {
       nombre: "cantidad",
-      etiqueta: "Razón Social",
-      tipo: "text",
+      etiqueta: "Cantidad",
+      tipo: "number",
       requerido: true,
     },
     {
       nombre: "nota",
-      etiqueta: "Razón Social",
+      etiqueta: "Nota de movimiento",
       tipo: "text",
       requerido: true,
     },
@@ -85,7 +80,7 @@ function Inventario() {
 
   return (
     <div className="mx-4">
-      <h1>CONTROL DE MOVIMIENTOS</h1>
+      <h2>Movimiento de Inventario</h2>
       {/* 🔹 Modal Bootstrap */}
       <div
         className="modal fade"
@@ -125,7 +120,7 @@ function Inventario() {
       >
         AGREGAR MOVIMIENTO
       </button>
-      <Tablas data={inventario}/>
+      <Tablas data={inventario} />
     </div>
   );
 }
