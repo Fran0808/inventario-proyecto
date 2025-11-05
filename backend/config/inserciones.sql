@@ -95,6 +95,56 @@ INSERT INTO Movimientos (id_producto, id_usuario, tipo_movimiento, fecha_movimie
 (21,1, 'ENTRADA','2025-11-03 16:00:00', 10, 'Reposición toallas de papel'),
 (22,1, 'SALIDA', '2025-11-03 16:20:00', 6, 'Venta de hojas A4 a oficina');
 
+
+-- Movimientos adicionales (27/10/2025 - 03/11/2025)
+INSERT INTO Movimientos (id_producto, id_usuario, tipo_movimiento, fecha_movimiento, cantidad, nota) VALUES
+-- 2025-10-27
+(1, 1, 'ENTRADA', '2025-10-27 08:30:00', 40, 'Recepción inicial agua mineral para local A'),
+(5, 1, 'ENTRADA', '2025-10-27 09:10:00', 50, 'Ingreso arroz 5kg lote promocional'),
+(8, 1, 'SALIDA',  '2025-10-27 11:45:00', 20, 'Venta atún en lata a tienda vecina'),
+(18,1, 'SALIDA',  '2025-10-27 12:30:00', 30, 'Venta clavos 1kg a constructor local'),
+
+-- 2025-10-28
+(3, 1, 'ENTRADA', '2025-10-28 08:20:00', 25, 'Llegada jugo de mango 1L'),
+(6, 1, 'SALIDA',  '2025-10-28 10:00:00', 15, 'Venta azúcar 2kg'),
+(11,1, 'ENTRADA', '2025-10-28 13:15:00', 20, 'Reposición detergente en polvo'),
+(20,1, 'SALIDA', '2025-10-28 15:40:00', 12, 'Venta pack papel higiénico'),
+
+-- 2025-10-29
+(9, 1, 'ENTRADA', '2025-10-29 09:00:00', 30, 'Ingreso sopa instantánea pack 12'),
+(7, 1, 'SALIDA',  '2025-10-29 11:10:00', 25, 'Venta harina de trigo 1kg'),
+(24,1, 'ENTRADA', '2025-10-29 14:00:00', 10, 'Compra guantes nitrilo para almacén'),
+(16,1, 'SALIDA',  '2025-10-29 16:20:00', 7,  'Venta martillos a ferretería local'),
+
+-- 2025-10-30 (más volumen ese día)
+(4, 1, 'ENTRADA', '2025-10-30 08:45:00', 50, 'Recepción cerveza lata pack 24 promocional'),
+(4, 1, 'SALIDA',  '2025-10-30 12:00:00', 18, 'Venta pack cerveza a cliente'),
+(25,1, 'ENTRADA', '2025-10-30 13:00:00', 20, 'Ingreso aceite comestible 5L'),
+(26,1, 'ENTRADA', '2025-10-30 15:30:00', 15, 'Llegada mayonesa industrial'),
+
+-- 2025-10-31 (complementos)
+(12,1, 'ENTRADA', '2025-10-31 08:30:00', 25, 'Reposición jabón líquido 3L'),
+(13,1, 'SALIDA',  '2025-10-31 10:00:00', 12, 'Venta lejía/blanqueador 1L a limpiadora'),
+(14,1, 'SALIDA',  '2025-10-31 14:20:00', 8,  'Venta desinfectante multiuso'),
+(23,1, 'ENTRADA', '2025-10-31 16:45:00', 40, 'Ingreso etiquetas adhesivas'),
+
+-- 2025-11-01 (más actividad previa)
+(2, 1, 'ENTRADA', '2025-11-01 08:10:00', 30, 'Reposición gaseosa cola 2L'),
+(10,1, 'SALIDA',  '2025-11-01 11:00:00', 20, 'Venta frijoles en lata'),
+(15,1, 'ENTRADA', '2025-11-01 12:30:00', 15, 'Compra escobas industriales'),
+(21,1, 'SALIDA',  '2025-11-01 17:00:00', 5,  'Venta toallas de papel a oficina'),
+
+-- 2025-11-02 (complementario)
+(17,1, 'ENTRADA', '2025-11-02 09:25:00', 20, 'Ingreso juego destornilladores'),
+(19,1, 'ENTRADA', '2025-11-02 10:40:00', 30, 'Reposición tornillos surtidos'),
+(22,1, 'ENTRADA', '2025-11-02 13:50:00', 20, 'Ingreso hojas A4 paquete 500'),
+(31,1, 'ENTRADA', '2025-11-02 15:10:00', 10, 'Pequeña compra whisky bodega'),
+
+-- 2025-11-03 (completando el día existente)
+(6, 1, 'ENTRADA', '2025-11-03 08:50:00', 25, 'Reposición azúcar 2kg'),
+(5, 1, 'ENTRADA', '2025-11-03 09:20:00', 20, 'Reposición arroz 5kg lote B'),
+(8, 1, 'ENTRADA', '2025-11-03 10:45:00', 20, 'Reposición atún en lata'),
+(9, 1, 'SALIDA',  '2025-11-03 17:00:00', 10, 'Venta sopa instantánea a minorista');
 -- Reactivar comprobaciones FK
 SET FOREIGN_KEY_CHECKS = 1;
 
