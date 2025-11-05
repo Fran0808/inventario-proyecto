@@ -54,6 +54,42 @@ const DashboardModel = {
       });
     });
   },
+  obtenerMovimientosNDias: (days = 7, metric = "count") => {
+    return new Promise((resolve, reject) => {
+      const agg =
+        metric === "sum"
+          ? "SUM(m.cantidad) AS movimientos"
+          : "COUNT(*) AS movimientos";
+      const daysNum = Math.max(1, Number(days) || 7);
+
+      // calcular fecha inicio en JS (incluye hoy)
+      const d = new Date();
+      d.setHours(0, 0, 0, 0);
+      d.setDate(d.getDate() - (daysNum - 1));
+      const yyyy = d.getFullYear();
+      const mm = String(d.getMonth() + 1).padStart(2, "0");
+      const dd = String(d.getDate()).padStart(2, "0");
+      const startDate = `${yyyy}-${mm}-${dd}`; // 'YYYY-MM-DD'
+
+      const sql = `
+        SELECT DATE(m.fecha_movimiento) AS fecha,
+               m.tipo_movimiento,
+               ${agg}
+        FROM movimientos m
+        WHERE DATE(m.fecha_movimiento) >= ?
+        GROUP BY DATE(m.fecha_movimiento), m.tipo_movimiento
+        ORDER BY DATE(m.fecha_movimiento);
+      `;
+      db.query(sql, [startDate], (err, results) => {
+        if (err) return reject(err);
+        resolve(results); // [{fecha: '2025-11-03', tipo_movimiento: 'ENTRADA', movimientos: 5}, ...]
+      });
+    });
+  },
+
+  obtenerMovimientos7Dias: () => {
+    return DashboardModel.obtenerMovimientosNDias(7, "count");
+  },
 };
 
 module.exports = DashboardModel;
