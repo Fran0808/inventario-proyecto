@@ -39,8 +39,8 @@ const DashboardModel = {
     return new Promise((resolve, reject) => {
       const sql = `
       SELECT 
-        m.id_movimiento, m.id_producto, p.nombre_producto, m.id_usuario, u.nombre_usuario, m.tipo_movimiento,
-        m.fecha_movimiento, m.cantidad, m.nota
+        m.id_movimiento, m.id_producto, p.nombre_producto, m.tipo_movimiento,
+        DATE_FORMAT(m.fecha_movimiento, '%Y-%m-%d') AS fecha_movimiento, m.cantidad, m.nota
       FROM movimientos m
       JOIN producto p ON m.id_producto = p.id_producto
       JOIN usuario u ON m.id_usuario = u.id_usuario
@@ -54,6 +54,7 @@ const DashboardModel = {
       });
     });
   },
+
   obtenerMovimientosNDias: (days = 7, metric = "count") => {
     return new Promise((resolve, reject) => {
       const agg =
@@ -72,7 +73,7 @@ const DashboardModel = {
       const startDate = `${yyyy}-${mm}-${dd}`; // 'YYYY-MM-DD'
 
       const sql = `
-        SELECT DATE(m.fecha_movimiento) AS fecha,
+        SELECT DATE_FORMAT(m.fecha_movimiento, '%Y-%m-%d') AS fecha,
                m.tipo_movimiento,
                ${agg}
         FROM movimientos m
