@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Formulario from "../componentes/Formulario/Formulario";
 import Tablas from "../componentes/Tablas/Tablas";
+import Swal from "sweetalert2";
 
 function Inventario() {
   // Estados
@@ -51,14 +52,30 @@ function Inventario() {
       });
 
       if (res.ok) {
-        alert("Movimiento de inventario registrado correctamente");
+        await Swal.fire({
+          icon: "success",
+          title: "Movimiento registrado correctamente",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+
         obtenerInventario();
         document.getElementById("cerrarModal")?.click();
       } else {
-        alert("Error al registrar el movimiento");
+        const errorData = await res.json().catch(() => ({}));
+        await Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: errorData.error || "Error al registrar el movimiento",
+        });
       }
     } catch (error) {
       console.error("Error en la solicitud:", error);
+      await Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "No se pudo completar la solicitud",
+      });
     }
   };
 
@@ -95,21 +112,44 @@ function Inventario() {
       );
 
       if (res.ok) {
-        alert("Movimiento actualizado correctamente");
+        await Swal.fire({
+          icon: "success",
+          title: "Movimiento actualizado",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+
         obtenerInventario();
         document.getElementById("cerrarModalEditar")?.click();
       } else {
-        const errorData = await res.json();
-        alert("Error al actualizar el movimiento: " + errorData.error);
+        const errorData = await res.json().catch(() => ({}));
+        await Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: errorData.error || "Error al actualizar el movimiento",
+        });
       }
     } catch (error) {
       console.error("Error al actualizar movimiento:", error);
+      await Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "No se pudo actualizar el movimiento",
+      });
     }
   };
 
-  // Eliminar movimiento
   const eliminarMovimiento = async (movimiento) => {
-    if (!window.confirm("¿Eliminar movimiento?")) return;
+    const result = await Swal.fire({
+      title: "¿Eliminar movimiento?",
+      text: "Esta acción no se puede deshacer.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Sí, eliminar",
+      cancelButtonText: "Cancelar",
+    });
+
+    if (!result.isConfirmed) return; // si cancela, no hace nada
 
     try {
       const res = await fetch(
@@ -118,13 +158,29 @@ function Inventario() {
       );
 
       if (res.ok) {
-        alert("Movimiento eliminado correctamente");
+        await Swal.fire({
+          icon: "success",
+          title: "Movimiento eliminado",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+
         obtenerInventario();
       } else {
-        alert("Error al eliminar el movimiento");
+        const errorData = await res.json().catch(() => ({}));
+        await Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: errorData.error || "Error al eliminar el movimiento",
+        });
       }
     } catch (error) {
       console.error("Error al eliminar movimiento:", error);
+      await Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "No se pudo eliminar el movimiento",
+      });
     }
   };
 

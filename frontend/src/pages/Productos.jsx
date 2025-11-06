@@ -1,7 +1,7 @@
-
 import React, { useEffect, useState } from "react";
 import Formulario from "../componentes/Formulario/Formulario";
 import Tablas from "../componentes/Tablas/Tablas";
+import Swal from "sweetalert2";
 import "./Style.css";
 function Productos() {
   // Estados para datos
@@ -30,10 +30,20 @@ function Productos() {
     });
 
     if (res.ok) {
-      alert("Producto agregado correctamente");
-      obtenerProductos(); // ⬅️ Recargamos los datos
+      await Swal.fire({
+        icon: "success",
+        title: "Producto agregado correctamente",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+
+      obtenerProductos();
     } else {
-      alert("Error al agregar producto");
+      await Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Error al agregar producto",
+      });
     }
   };
 
@@ -67,24 +77,49 @@ function Productos() {
     );
 
     if (res.ok) {
-      alert("Producto actualizado correctamente");
+      await Swal.fire({
+        icon: "success",
+        title: "Producto actualizado correctamente",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+
       obtenerProductos();
       document.getElementById("cerrarModalEditar").click();
     } else {
       const errorData = await res.json();
-      alert("Error al actualizar el producto: " + errorData.error);
+      await Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Error al actualizar el producto: " + errorData.error,
+      });
     }
   };
 
   // Eliminar proveedor
   const eliminarProducto = async (producto) => {
-    if (!window.confirm("¿Eliminar producto?")) return;
+    const result = await Swal.fire({
+      title: "¿Eliminar producto?",
+      text: "Esta acción no se puede deshacer.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Sí, eliminar",
+      cancelButtonText: "Cancelar",
+    });
+    if (!result.isConfirmed) return;
+
     const res = await fetch(
       `http://localhost:3000/productos/${producto.id_producto}`,
       { method: "DELETE" }
     );
     if (res.ok) {
-      alert("Producto eliminado");
+      await Swal.fire({
+        icon: "success",
+        title: "Producto eliminado",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+
       obtenerProductos();
     }
   };
@@ -126,14 +161,14 @@ function Productos() {
       nombre: "id_categoria",
       etiqueta: "Categoría",
       tipo: "select",
-      opciones: datosCategorias, 
+      opciones: datosCategorias,
       requerido: true,
     },
     {
       nombre: "id_proveedor",
       etiqueta: "Proveedor",
       tipo: "select",
-      opciones: datosProveedores, 
+      opciones: datosProveedores,
       requerido: true,
     },
     {

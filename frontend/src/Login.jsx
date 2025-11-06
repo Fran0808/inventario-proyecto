@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 import "./Login.css";
 
 const Login = () => {
@@ -24,12 +25,15 @@ const Login = () => {
 
     // Verifica que los campos no estén vacíos
     if (!dato.username || !dato.contraseña) {
-      alert("Ingresa usuario y contraseña");
+      Swal.fire({
+        icon: "warning",
+        title: "Campos vacíos",
+        text: "Ingresa usuario y contraseña",
+      });
       return;
     }
 
     try {
-      // Envía la petición al backend
       const res = await fetch("http://localhost:3000/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -41,20 +45,29 @@ const Login = () => {
 
       const data = await res.json();
 
-      // Si el backend responde con error (por ejemplo 401 o 500)
       if (!res.ok) {
         throw new Error(data.message || "Error al iniciar sesión");
       }
 
-      // Si todo está bien, guarda los datos del usuario en el almacenamiento local
+      // Guarda los datos del usuario
       localStorage.setItem("auth", JSON.stringify(data.usuario));
 
-      alert(`Bienvenido ${data.usuario.nombre_usuario}`);
+      // Muestra mensaje de éxito
+      await Swal.fire({
+        icon: "success",
+        title: `Bienvenido ${data.usuario.nombre_usuario}`,
+        showConfirmButton: false,
+        timer: 1500,
+      });
 
-      // Redirige a /inicio
+      // Redirige al inicio
       navigate("/inicio");
     } catch (err) {
-      alert(err.message);
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: err.message,
+      });
     }
   };
 

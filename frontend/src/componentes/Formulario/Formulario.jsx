@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./Formulario.css";
+import Swal from "sweetalert2";
 
 function Formulario({ titulo, campos = [], onEnviar }) {
   /*Propiedades Props*/
@@ -14,9 +15,23 @@ function Formulario({ titulo, campos = [], onEnviar }) {
     }));
   };
 
-  const manejarEnvio = (e) => {
+  const manejarEnvio = async (e) => {
     e.preventDefault();
-    if (onEnviar) onEnviar(valores);
+    try {
+      if (onEnviar) await onEnviar(valores);
+      Swal.fire({
+        icon: "success",
+        title: "Envio realizado exitosamente",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: error?.message || "No se pudo completar el envio",
+      });
+    }
   };
 
   useEffect(() => {

@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import Formulario from "../componentes/Formulario/Formulario";
 import Tablas from "../componentes/Tablas/Tablas";
+import Swal from "sweetalert2";
 import "./Style.css";
+
 function Proveedores() {
   const [proveedores, setProveedores] = useState([]);
   const [proveedorSeleccionado, setProveedorSeleccionado] = useState(null);
@@ -25,11 +27,21 @@ function Proveedores() {
     });
 
     if (res.ok) {
-      alert("Proveedor registrado correctamente");
+      await Swal.fire({
+        icon: "success",
+        title: "Proveedor registrado correctamente",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+
       obtenerProveedores();
-      document.getElementById("cerrarModalAgregar").click();
+      document.getElementById("cerrarModalAgregar")?.click();
     } else {
-      alert("Error al registrar el proveedor");
+      await Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Error al registrar el proveedor",
+      });
     }
   };
 
@@ -53,24 +65,50 @@ function Proveedores() {
     );
 
     if (res.ok) {
-      alert("Proveedor actualizado correctamente");
+      await Swal.fire({
+        icon: "success",
+        title: "Proveedor actualizado correctamente",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+
       obtenerProveedores();
-      document.getElementById("cerrarModalEditar").click();
+      document.getElementById("cerrarModalEditar")?.click();
     } else {
       const errorData = await res.json();
-      alert("Error al actualizar el proveedor: " + errorData.error);
+      await Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Error al actualizar el proveedor: " + (errorData.error || ""),
+      });
     }
   };
 
   // Eliminar proveedor
   const eliminarProveedor = async (proveedor) => {
-    if (!window.confirm("¿Eliminar proveedor?")) return;
+    const result = await Swal.fire({
+      title: "¿Eliminar proveedor?",
+      text: "Esta acción no se puede deshacer.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Sí, eliminar",
+      cancelButtonText: "Cancelar",
+    });
+
+    if (!result.isConfirmed) return;
+
     const res = await fetch(
       `http://localhost:3000/proveedores/${proveedor.id_proveedor}`,
       { method: "DELETE" }
     );
     if (res.ok) {
-      alert("Proveedor eliminado");
+      await Swal.fire({
+        icon: "success",
+        title: "Proveedor eliminado",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+
       obtenerProveedores();
     }
   };
