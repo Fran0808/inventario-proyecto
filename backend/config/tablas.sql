@@ -1,5 +1,6 @@
--- SCRIPT: Eliminar y crear esquema
--- Fecha de referencia: 2025-11-03
+-- =========================================
+-- SCRIPT: Creación de tablas
+-- =========================================
 
 -- Desactivar comprobaciones FK temporalmente para evitar errores al eliminar
 SET FOREIGN_KEY_CHECKS = 0;
