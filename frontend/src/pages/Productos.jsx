@@ -1,3 +1,4 @@
+import * as bootstrap from "bootstrap";
 import React, { useEffect, useState } from "react";
 import Formulario from "../componentes/Formulario/Formulario";
 import Tablas from "../componentes/Tablas/Tablas";
@@ -51,7 +52,6 @@ function Productos() {
     if (!productoSeleccionado) return;
 
     const {
-      id_producto,
       nombre_producto,
       id_categoria,
       id_proveedor,

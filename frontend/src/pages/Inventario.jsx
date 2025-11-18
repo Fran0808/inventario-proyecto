@@ -1,3 +1,4 @@
+import * as bootstrap from "bootstrap";
 import React, { useEffect, useState } from "react";
 import Formulario from "../componentes/Formulario/Formulario";
 import Tablas from "../componentes/Tablas/Tablas";
@@ -84,7 +85,6 @@ function Inventario() {
     if (!movimientoSeleccionado) return;
 
     const {
-      id_movimiento,
       id_producto,
       tipo_movimiento,
       fecha_movimiento,

@@ -1,3 +1,4 @@
+import * as bootstrap from "bootstrap";
 import React, { useEffect, useState } from "react";
 import Formulario from "../componentes/Formulario/Formulario";
 import Tablas from "../componentes/Tablas/Tablas";
@@ -48,7 +49,7 @@ function Proveedores() {
   const manejarActualizacion = async (proveedorActualizado) => {
     if (!proveedorSeleccionado) return;
 
-    const { id_proveedor, activo, ...resto } = proveedorActualizado;
+    const { activo, ...resto } = proveedorActualizado;
 
     const body = {
       ...resto,

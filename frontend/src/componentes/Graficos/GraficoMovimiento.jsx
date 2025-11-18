@@ -81,7 +81,7 @@ export default function GraficoMovimiento() {
 
         if (isMounted) setChartData(chart);
       } catch (err) {
-        if (isMounted) setError("No se pudo cargar el gráfico");
+        if (isMounted) setError("No se pudo cargar el gráfico: " + err);
       } finally {
         if (isMounted) setLoading(false);
       }
